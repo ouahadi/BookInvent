@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BookInvent</string>
+    <string name="delivery_ordered">Ordered</string>
+    <string name="delivery_shipped">Shipped</string>
+    <string name="delivery_delivered">Delivered</string>
+    <string name="delivery_in_stock">In Stock</string>
+</resources>
