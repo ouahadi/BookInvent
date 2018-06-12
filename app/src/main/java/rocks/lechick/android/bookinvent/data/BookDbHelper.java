@@ -28,10 +28,10 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 BookContract.BookEntry.COLUMN_NAME_BPRICE + " INTEGER NOT NULL, " +
                 BookContract.BookEntry.COLUMN_NAME_SPRICE + " INTEGER NOT NULL," +
                 BookContract.BookEntry.COLUMN_NAME_QUANTITY + " INTEGER NOT NULL," +
-                BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME + "STRING " +
-                BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT + "STRING " +
-                BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS + "INTEGER" +
-                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY + "INTEGER);";
+                BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME + " STRING, " +
+                BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT + " STRING, " +
+                BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS + " INTEGER, " +
+                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY + " INTEGER );";
         sqLiteDatabase.execSQL(SQL_CREATE_ENTRIES);
 
     }

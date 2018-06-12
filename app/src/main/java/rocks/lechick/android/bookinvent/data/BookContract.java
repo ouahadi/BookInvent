@@ -10,13 +10,13 @@ public final class BookContract {
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_NAME_AUTHOR = "author";
         public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_BPRICE = "buying price";
-        public static final String COLUMN_NAME_SPRICE = "selling price";
+        public static final String COLUMN_NAME_BPRICE = "buying_price";
+        public static final String COLUMN_NAME_SPRICE = "selling_price";
         public static final String COLUMN_NAME_QUANTITY = "quantity";
-        public static final String COLUMN_NAME_SUPPLIER_NAME = "supplier name";
-        public static final String COLUMN_NAME_SUPPLIER_CONTACT = "supplier contact";
-        public static final String COLUMN_NAME_SHIPMENT_STATUS = "shipment status";
-        public static final String COLUMN_NAME_EXPECTED_DELIVERY = "expected delivery";
+        public static final String COLUMN_NAME_SUPPLIER_NAME = "supplier_name";
+        public static final String COLUMN_NAME_SUPPLIER_CONTACT = "supplier_contact";
+        public static final String COLUMN_NAME_SHIPMENT_STATUS = "shipment_status";
+        public static final String COLUMN_NAME_EXPECTED_DELIVERY = "expected_delivery";
 
         public static final int DELIVERY_STATUS_ORDERED = 1;
         public static final int DELIVERY_STATUS_ON_ITS_WAY = 2;

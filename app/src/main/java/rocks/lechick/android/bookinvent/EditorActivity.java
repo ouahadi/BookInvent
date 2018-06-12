@@ -36,7 +36,7 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        mAuthor = (EditText) findViewById(R.id.title_text_view);
+        mAuthor = (EditText) findViewById(R.id.author_text_view);
         mTitle = (EditText) findViewById(R.id.title_text_view);
         mBuyingPrice = (EditText) findViewById(R.id.buying_price_text_view);
         mSellingPrice = (EditText) findViewById(R.id.selling_price_text_view);
@@ -52,8 +52,6 @@ public class EditorActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 insertBook();
-                finish();
-                finish();
                 Intent i = new Intent(EditorActivity.this, CatalogActivity.class);
                 startActivity(i);
             }
