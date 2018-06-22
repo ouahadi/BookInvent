@@ -4,4 +4,8 @@
     <string name="delivery_shipped">Shipped</string>
     <string name="delivery_delivered">Delivered</string>
     <string name="delivery_in_stock">In Stock</string>
+    <string name="fiction">Fiction</string>
+    <string name="business">Business</string>
+    <string name="pop_sci">Pop Sci</string>
+    <string name="other">Other</string>
 </resources>

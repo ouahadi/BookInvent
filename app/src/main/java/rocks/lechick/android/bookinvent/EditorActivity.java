@@ -28,6 +28,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText mSupplierContact;
     private Spinner mStatusSpinner;
     private int mDeliveryStatus = 0;
+    private Spinner mCategorySpinner;
+    private int mCategory = 3;
 
     private BookDbHelper mDbHelper;
 
@@ -44,9 +46,11 @@ public class EditorActivity extends AppCompatActivity {
         mSupplierName = (EditText) findViewById(R.id.supplier_name_text_view);
         mSupplierContact = (EditText) findViewById(R.id.supplier_contact_text_view);
         mStatusSpinner = (Spinner) findViewById(R.id.spinner_delivery_status);
+        mCategorySpinner = (Spinner) findViewById(R.id.spinner_category);
 
         mDbHelper = new BookDbHelper(this);
         setupSpinner();
+        setupCategorySpinner();
 
         Button saveButton = (Button) findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -96,27 +100,67 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
+    private void setupCategorySpinner() {
+        // Create adapter for spinner. The list options are from the String array it will use
+        // the spinner will use the default layout
+        ArrayAdapter deliverySpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.category_options, android.R.layout.simple_spinner_item);
+
+        // Specify dropdown layout style - simple list view with 1 item per line
+        deliverySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        // Apply the adapter to the spinner
+        mCategorySpinner.setAdapter(deliverySpinnerAdapter);
+
+        // Set the integer mSelected to the constant values
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.fiction))) {
+                        mCategory = BookContract.BookEntry.CATEGORY_FICTION;
+                    } else if (selection.equals(getString(R.string.business))) {
+                        mCategory = BookContract.BookEntry.CATEGORY_BUSINESS;
+                    } else if (selection.equals(getString(R.string.pop_sci))) {
+                        mCategory = BookContract.BookEntry.CATEGORY_POP_SCIENCE;
+                    } else {
+                        mCategory = BookContract.BookEntry.CATEGORY_OTHER;
+                    }
+                }
+            }
+
+            // Because AdapterView is an abstract class, onNothingSelected must be defined
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mCategory = 3;
+            }
+        });
+    }
+
     private void insertBook() {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         String author = mAuthor.getText().toString().trim();
         String title = mTitle.getText().toString().trim();
-        int buyingPrice = Integer.parseInt(mBuyingPrice.getText().toString().trim());
-        int sellingPrice = Integer.parseInt(mSellingPrice.getText().toString().trim());
+        double buyPrice = Double.parseDouble(mBuyingPrice.getText().toString().trim());
+        double sellPrice = Double.parseDouble(mSellingPrice.getText().toString().trim());
         int quantity = Integer.parseInt(mQuantity.getText().toString().trim());
         String supplierName = mSupplierName.getText().toString().trim();
         String supplierContact = mSupplierContact.getText().toString().trim();
         int deliveryStatus = mDeliveryStatus;
+        int category = mCategory;
 
         values.put(BookContract.BookEntry.COLUMN_NAME_AUTHOR, author);
         values.put(BookContract.BookEntry.COLUMN_NAME_TITLE, title);
-        values.put(BookContract.BookEntry.COLUMN_NAME_BPRICE, buyingPrice);
-        values.put(BookContract.BookEntry.COLUMN_NAME_SPRICE, sellingPrice);
+        values.put(BookContract.BookEntry.COLUMN_NAME_BPRICE, buyPrice);
+        values.put(BookContract.BookEntry.COLUMN_NAME_SPRICE, sellPrice);
         values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantity);
         values.put(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME, supplierName);
         values.put(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT, supplierContact);
         values.put(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS, deliveryStatus);
+        values.put(BookContract.BookEntry.COLUMN_NAME_CATEGORY, category);
 
         long newRowId = db.insert(BookContract.BookEntry.TABLE_NAME, null, values);
 

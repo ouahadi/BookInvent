@@ -8,7 +8,7 @@
     >
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/list_book_imageview"
         android:layout_width="79dp"
         android:layout_height="90dp"
         app:srcCompat="@drawable/turquoise_book"
@@ -28,6 +28,7 @@
             android:layout_gravity="center_vertical">
 
             <TextView
+                android:id="@+id/list_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="The Call of the Wild"
@@ -37,12 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/list_author_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Jack London"
                     android:maxLines="1"
                     android:textSize="18sp"/>
                 <TextView
+                    android:id="@+id/list_selling_price_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" - £ 4.99"
@@ -58,6 +61,7 @@
             android:layout_margin="4dp">
 
             <TextView
+                android:id="@+id/list_quantity_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -71,6 +75,7 @@
                 android:textAllCaps="true"
                 android:textSize="8sp"/>
             <Button
+                android:id="@+id/button_sell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sell"

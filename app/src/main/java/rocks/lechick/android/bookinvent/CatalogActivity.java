@@ -3,6 +3,8 @@ package rocks.lechick.android.bookinvent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import rocks.lechick.android.bookinvent.adapters.SimpleFragmentPagerAdapter;
 import rocks.lechick.android.bookinvent.data.BookContract;
 import rocks.lechick.android.bookinvent.data.BookDbHelper;
 
@@ -34,6 +37,18 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        // Create an adapter that knows which fragment should be shown on each page
+        SimpleFragmentPagerAdapter adapter;
+        adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
+
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         mDbHelper = new BookDbHelper(this);
         displayDatabaseInfo();
@@ -56,7 +71,8 @@ public class CatalogActivity extends AppCompatActivity {
                 BookContract.BookEntry.COLUMN_NAME_TITLE,
                 BookContract.BookEntry.COLUMN_NAME_QUANTITY,
                 BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS,
-                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY
+                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY,
+                BookContract.BookEntry.COLUMN_NAME_CATEGORY
         };
 
         // Filter results WHERE "title" = 'My Title'

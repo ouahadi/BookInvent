@@ -31,7 +31,8 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME + " STRING, " +
                 BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT + " STRING, " +
                 BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS + " INTEGER, " +
-                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY + " INTEGER );";
+                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY + " INTEGER, " +
+                BookContract.BookEntry.COLUMN_NAME_CATEGORY+ " INTEGER NOT NULL DEFAULT 3);";
         sqLiteDatabase.execSQL(SQL_CREATE_ENTRIES);
 
     }

@@ -4,12 +4,145 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/details_book_image"
         android:layout_width="180dp"
         android:layout_height="210dp"
         android:src="@drawable/yellow_orange_book"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"/>
 
+    <TextView
+        android:id="@+id/details_title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="War and Peace"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/details_book_image"
+        android:textSize="20sp"/>
 
+    <TextView
+        android:id="@+id/details_author_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="L. N. Tolstoi"
+        android:layout_toRightOf="@id/details_book_image"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/details_category_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fiction"
+        android:layout_toRightOf="@id/details_book_image"
+        android:textAllCaps="true"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/details_price_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" £ 5.99"
+        android:layout_toRightOf="@id/details_category_text_view"
+        android:textSize="20sp"/>
+
+<LinearLayout
+    android:id="@+id/details_stock_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/details_in_stock_textview"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="In stock"
+            android:textAllCaps="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/details_minus_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+
+            <TextView
+                android:id="@+id/details_stock_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="44"/>
+
+            <Button
+                android:id="@+id/details_plus_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/details_ordered_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ordered"/>
+        <TextView
+            android:id="@+id/details_ordered_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+    <Button
+        android:id="@+id/details_order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order more"
+        android:layout_below="@id/details_stock_layout"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/details_find_new_supplier_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find new supplier"
+        android:textAllCaps="true"
+        android:textColorHighlight="@color/colorOrange"
+        android:layout_below="@id/details_order_button"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/details_report_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report defect"
+        android:textAllCaps="true"
+        android:textColorHighlight="@color/colorOrange"
+        android:layout_below="@id/details_find_new_supplier_textview"
+        android:gravity="center_horizontal"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/details_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/sketch_pencil_black"/>
 
 </RelativeLayout>
