@@ -52,7 +52,7 @@ public class BookCursorAdapter extends CursorAdapter {
         if (category == BookContract.BookEntry.CATEGORY_POP_SCIENCE){
             bookImage.setImageResource(R.drawable.yellow_orange_book);
         }
-        else {
+        if (category == BookContract.BookEntry.CATEGORY_OTHER) {
             bookImage.setImageResource(R.drawable.turquoise_book);
         }
     }

@@ -8,4 +8,20 @@
     <string name="business">Business</string>
     <string name="pop_sci">Pop Sci</string>
     <string name="other">Other</string>
+    <string name="editor_insert_book_failed">We could not add this item</string>
+    <string name="editor_insert_book_successful">We\'ve added </string>
+    <string name="editor_update_book_failed">We could not update this item</string>
+    <string name="editor_update_book_successful">We\'ve updated the info stored for </string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="action_delete_all_entries_this_category">Clear this category</string>
+    <string name="action_change_sorting_order">Change sorting order</string>
+    <string name="by_stock">By stock</string>
+    <string name="by_title">By title</string>
+    <string name="by_author">By author</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+
+
 </resources>
