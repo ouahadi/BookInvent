@@ -1,8 +1,11 @@
 package rocks.lechick.android.bookinvent;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -127,6 +130,16 @@ public class CatalogActivity extends AppCompatActivity {
             cursor.close();
          }
 
+    }
+
+    public void editQuantity(Context context, ContentValues values, Cursor cursor, long id) {
+        String whereThing = BookContract.BookEntry._ID + " = " + id;
+        String quantity = values.getAsString(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
+        int quantityInt = Integer.parseInt(quantity);
+        quantityInt = quantityInt - 1;
+        values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
+
+        context.getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
     }
 
 }

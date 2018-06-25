@@ -1,6 +1,8 @@
 package rocks.lechick.android.bookinvent.fragments;
 
 import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,6 +36,7 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
     BookCursorAdapter mCursorAdapter;
     BookDbHelper mDbHelper;
     private String sortOrder = null;
+    private String selection;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +52,8 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent i = new Intent(getActivity(), EditorActivity.class);
-                Uri currentPetUri =  ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
-                i.setData(currentPetUri);
+                Uri currentBookUri =  ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
+                i.setData(currentBookUri);
                 startActivity(i);
             }
         });
@@ -81,7 +84,7 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
                 BookContract.BookEntry.COLUMN_NAME_CATEGORY
         };
 
-        String selection = BookContract.BookEntry.COLUMN_NAME_CATEGORY + " = " + BookContract.BookEntry.CATEGORY_BUSINESS;
+        selection = BookContract.BookEntry.COLUMN_NAME_CATEGORY + " = " + BookContract.BookEntry.CATEGORY_BUSINESS;
 
         return new CursorLoader(getActivity(),
                 BookContract.BookEntry.CONTENT_URI, projection, selection, null, sortOrder);
@@ -103,24 +106,26 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreateOptionsMenu(menu,inflater);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             case R.id.by_stock:
-                sortOrder = BookContract.BookEntry.COLUMN_NAME_QUANTITY + " ASC";
+                sortOrder = BookContract.BookEntry.COLUMN_NAME_QUANTITY + " DESC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().initLoader(BOOK_LOADER, null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
                 return true;
             case R.id.by_author:
                 sortOrder = BookContract.BookEntry.COLUMN_NAME_AUTHOR + " ASC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().initLoader(BOOK_LOADER, null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
                 return true;
             case R.id.by_title:
                 sortOrder = BookContract.BookEntry.COLUMN_NAME_TITLE + " ASC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().initLoader(BOOK_LOADER, null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -131,8 +136,9 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void deleteAllBooks() {
-        int rowsDeleted = getActivity().getContentResolver().delete(BookContract.BookEntry.CONTENT_URI, null, null);
+        int rowsDeleted = getActivity().getContentResolver().delete(BookContract.BookEntry.CONTENT_URI, selection, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
+        getLoaderManager().restartLoader(BOOK_LOADER,null, this);
     }
 
 }

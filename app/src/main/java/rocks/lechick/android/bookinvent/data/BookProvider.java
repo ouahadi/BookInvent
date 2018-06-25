@@ -110,7 +110,7 @@ public class BookProvider extends ContentProvider{
             if (supplierName == null) {
                 throw new IllegalArgumentException("Book requires a price");
             }
-            String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SPRICE);
+            String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT);
             if (!BookContract.BookEntry.isValidMail(supplierContact) && !BookContract.BookEntry.isValidMobile(supplierContact)) {
                 throw new IllegalArgumentException("Please add a valid number or email address");
             }
@@ -118,14 +118,12 @@ public class BookProvider extends ContentProvider{
             if (quantity == null) {
                 throw new IllegalArgumentException("Please add quantity");
             }
-            Integer shipmentStatus = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
-            if (shipmentStatus == null) {
-                throw new IllegalArgumentException("Please edit the shipment status");
-            }
             Integer category = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_CATEGORY);
             if (category == null && !BookContract.BookEntry.isValidCategory(category)){
                 throw new IllegalArgumentException("Please select category");
             }
+            Integer shipment = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
+
 
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -208,22 +206,21 @@ public class BookProvider extends ContentProvider{
         if (supplierName == null) {
             throw new IllegalArgumentException("Book requires a price");
         }
-        String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SPRICE);
-        if (!BookContract.BookEntry.isValidMail(supplierContact) && !BookContract.BookEntry.isValidMobile(supplierContact)) {
-            throw new IllegalArgumentException("Please add a valid number or email address");
-        }
+        String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT);
+        //if (!BookContract.BookEntry.isValidMail(supplierContact) && !BookContract.BookEntry.isValidMobile(supplierContact)) {
+        //    throw new IllegalArgumentException("Please add a valid number or email address");
+        //}
         Integer quantity = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
         if (quantity == null) {
             throw new IllegalArgumentException("Please add quantity");
         }
-        Integer shipmentStatus = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
-        if (shipmentStatus == null) {
-            throw new IllegalArgumentException("Please edit the shipment status");
-        }
+
         Integer category = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_CATEGORY);
-        if (category == null && !BookContract.BookEntry.isValidCategory(category)){
+        if (category == null && !BookContract.BookEntry.isValidCategory(category)) {
             throw new IllegalArgumentException("Please select category");
         }
+        Integer shipment = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
+
         if (contentValues.size() == 0) {
             return 0;
         }
