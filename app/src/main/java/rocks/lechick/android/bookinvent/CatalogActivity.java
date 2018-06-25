@@ -132,10 +132,10 @@ public class CatalogActivity extends AppCompatActivity {
 
     }
 
-    public void editQuantity(Context context, ContentValues values, Cursor cursor, long id) {
+    public void editQuantity(Context context, ContentValues values, Cursor cursor, long id, int position) {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
-        String quantity = values.getAsString(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
-        int quantityInt = Integer.parseInt(quantity);
+        cursor.moveToPosition(position);
+        int quantityInt = cursor.getInt(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_QUANTITY));
         quantityInt = quantityInt - 1;
         values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
 

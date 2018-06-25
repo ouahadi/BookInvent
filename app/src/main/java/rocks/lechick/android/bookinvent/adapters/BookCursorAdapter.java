@@ -51,6 +51,7 @@ public class BookCursorAdapter extends CursorAdapter {
         String priceString = cursor.getString(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_SPRICE));
         final String[] quantityString = {cursor.getString(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_QUANTITY))};
         int category = cursor.getInt(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_CATEGORY));
+        final int position = cursor.getPosition();
 
         title.setText(titleString);
         author.setText(authorString);
@@ -73,12 +74,9 @@ public class BookCursorAdapter extends CursorAdapter {
         sellButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                quantityInt = Integer.parseInt(quantityString[0]);
-                quantityInt = quantityInt - 1;
-                quantityString[0] = Integer.toString(quantityInt);
-                quantity.setText(quantityString[0]);
+
+                cursor.moveToPosition(position);
                 long id = cursor.getLong(cursor.getColumnIndexOrThrow(BookContract.BookEntry._ID));
-                Uri currentBookUri = ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
 
 
                 String titleString = cursor.getString(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_TITLE));
@@ -101,8 +99,7 @@ public class BookCursorAdapter extends CursorAdapter {
                 values.put(BookContract.BookEntry.COLUMN_NAME_CATEGORY, category);
                 values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityStr);
                 CatalogActivity catalogActivity = (CatalogActivity) context;
-                int position = cursor.getPosition();
-                catalogActivity.editQuantity(context, values, cursor, id);
+                catalogActivity.editQuantity(context, values, cursor, id, position);
             }
         });
 
