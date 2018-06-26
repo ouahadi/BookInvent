@@ -53,84 +53,15 @@ public class CatalogActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        mDbHelper = new BookDbHelper(this);
-        displayDatabaseInfo();
 
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        displayDatabaseInfo();
-    }
-
-    private void displayDatabaseInfo() {
-
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                BookContract.BookEntry._ID,
-                BookContract.BookEntry.COLUMN_NAME_AUTHOR,
-                BookContract.BookEntry.COLUMN_NAME_TITLE,
-                BookContract.BookEntry.COLUMN_NAME_QUANTITY,
-                BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS,
-                BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY,
-                BookContract.BookEntry.COLUMN_NAME_CATEGORY
-        };
-
-        // Filter results WHERE "title" = 'My Title'
-        //String selection = BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS + " = ?";
-        //String[] selectionArgs = { "DELIVERY_STATUS_IN_STOCK" };
-
-        //String sortOrder = BookContract.BookEntry.COLUMN_NAME_AUTHOR + " DESC";
-
-        Cursor cursor = db.query(BookContract.BookEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        TextView displayView = (TextView) findViewById(R.id.text_view_book);
-
-        try {
-            displayView.setText("The books table contains " + cursor.getCount() + " book entries.\n\n");
-            displayView.append(BookContract.BookEntry._ID + " - " +
-                    BookContract.BookEntry.COLUMN_NAME_AUTHOR + " - " +
-                    BookContract.BookEntry.COLUMN_NAME_TITLE + " - " +
-                    BookContract.BookEntry.COLUMN_NAME_QUANTITY + " - " +
-                    BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS + " - " +
-                    BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY
-            );
-
-            int idColumnIndex = cursor.getColumnIndex(BookContract.BookEntry._ID);
-            int authorColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_AUTHOR);
-            int titleColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_TITLE);
-            int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
-            int shipmentColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
-            int deliveryColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_EXPECTED_DELIVERY);
-
-            while (cursor.moveToNext()) {
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentAuthor = cursor.getString(authorColumnIndex);
-                String currentTitle = cursor.getString(titleColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                int currentShipmentStatus = cursor.getInt(shipmentColumnIndex);
-                int currentExpDelivery = cursor.getInt(deliveryColumnIndex);
-                displayView.append(("\n" + currentID + " - " +
-                        currentAuthor + " - " +
-                        currentTitle + " - " +
-                        currentQuantity + " - " +
-                        currentShipmentStatus + " - " +
-                        currentExpDelivery));
-            }
-        }
-        finally {
-            cursor.close();
-         }
 
     }
+
 
     public void editQuantity(Context context, ContentValues values, Cursor cursor, long id, int position) {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
