@@ -10,6 +10,7 @@
 
     <ListView
         android:id="@+id/listView"
+        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/total_items_view"

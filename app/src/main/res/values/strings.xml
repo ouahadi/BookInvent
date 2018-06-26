@@ -13,8 +13,13 @@
     <string name="editor_update_book_failed">We could not update this item</string>
     <string name="editor_update_book_successful">We\'ve updated the info stored for </string>
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="editor_delete_book_failed">We could not delete this item</string>
+    <string name="editor_delete_book_successful">Book deleted!</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep Editing</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="delete_dialog_msg">Are you sure you want to remove this item?</string>
     <string name="action_delete_all_entries_this_category">Clear this category</string>
     <string name="action_change_sorting_order">Change sorting order</string>
     <string name="by_stock">By stock</string>
@@ -22,6 +27,12 @@
     <string name="by_author">By author</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
-
+    <string name="email_order_subj">Order for more: </string>
+    <string name="email_order_text">Hi! \nWe would like to order a 100 more of those! \nThree million thanks! \nXXX</string>
+    <string name="email_defect_subj">We\'re having issues with the batch of </string>
+    <string name="email_defect_text">Hi! \nWe would like to let you know that we\'ve found an issue with the
+        latest batch. PLEASE DESCRIBE THE ISSUE
+        \nWe would really appreciate if you could replace the whole batch,
+        because the defect makes it impossible to sell. \nThree million thanks! \nXXX</string>
 
 </resources>

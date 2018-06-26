@@ -11,8 +11,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,7 +62,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Intent intent = getIntent();
         mCurrentBookUri = intent.getData();
 
-        if (mCurrentBookUri == null){
+        if (mCurrentBookUri == null) {
             setTitle("Add a Book");
             invalidateOptionsMenu();
         } else {
@@ -96,7 +99,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Button saveButton = (Button) findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                insertBook();
+                if (mCurrentBookUri == null) {
+                    insertBook();
+                } else {
+                    saveBook();
+                }
+
                 Intent i = new Intent(EditorActivity.this, CatalogActivity.class);
                 startActivity(i);
             }
@@ -127,7 +135,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                         mDeliveryStatus = BookContract.BookEntry.DELIVERY_STATUS_ON_ITS_WAY;
                     } else if (selection.equals(getString(R.string.delivery_delivered))) {
                         mDeliveryStatus = BookContract.BookEntry.DELIVERY_STATUS_DELIVERED;
-                } else {
+                    } else {
                         mDeliveryStatus = BookContract.BookEntry.DELIVERY_STATUS_IN_STOCK;
                     }
                 }
@@ -205,10 +213,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         long newRowId = db.insert(BookContract.BookEntry.TABLE_NAME, null, values);
 
-        if (newRowId == -1){
+        if (newRowId == -1) {
             Toast.makeText(this, "We can't be saving books like this!", Toast.LENGTH_LONG);
-        }
-        else {
+        } else {
             Toast.makeText(this, "We've assigned " + title + " ID " + newRowId, Toast.LENGTH_SHORT).show();
         }
     }
@@ -289,39 +296,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onBackPressed() {
-        if (!mBookHasChanged) {
-            super.onBackPressed();
-            return;
-        }
-
-        DialogInterface.OnClickListener discardButtonClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                };
-        showUnsavedChangesDialog(discardButtonClickListener);
-    }
-
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.unsaved_changes_dialog_msg);
-        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 BookContract.BookEntry._ID,
@@ -372,11 +346,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Update the views on the screen with the values from the database
             mTitle.setText(title);
             mAuthor.setText(author);
-            mQuantity.setText(quantity);
-            mSellingPrice.setText(Double.toHexString(sprice));
+            mQuantity.setText(Integer.toString(quantity));
+            mSellingPrice.setText(Double.toString(sprice));
             mBuyingPrice.setText(Double.toString(bprice));
             mSupplierContact.setText(supplierContact);
             mSupplierName.setText(supplierName);
+            mCategorySpinner.setSelection(category);
 
             switch (shipmentStatus) {
                 case BookContract.BookEntry.DELIVERY_STATUS_DELIVERED:
@@ -388,21 +363,167 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 case BookContract.BookEntry.DELIVERY_STATUS_ORDERED:
                     mStatusSpinner.setSelection(0);
             }
-            switch (category) {
-                case BookContract.BookEntry.CATEGORY_FICTION:
-                    mCategorySpinner.setSelection(0);
-                case BookContract.BookEntry.CATEGORY_BUSINESS:
-                    mCategorySpinner.setSelection(1);
-                case BookContract.BookEntry.CATEGORY_POP_SCIENCE:
-                    mCategorySpinner.setSelection(2);
-                case BookContract.BookEntry.CATEGORY_OTHER:
-                    mCategorySpinner.setSelection(3);
-            }
+            //switch (category) {
+              //  case BookContract.BookEntry.CATEGORY_FICTION:
+              //      mCategorySpinner.setSelection(0);
+              //  case BookContract.BookEntry.CATEGORY_BUSINESS:
+              //      mCategorySpinner.setSelection(1);
+              //  case BookContract.BookEntry.CATEGORY_POP_SCIENCE:
+              //      mCategorySpinner.setSelection(2);
+              //  case BookContract.BookEntry.CATEGORY_OTHER:
+              //      mCategorySpinner.setSelection(3);
+            //}
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        mTitle.setText("");
+        mAuthor.setText("");
+        mQuantity.setText("");
+        mSellingPrice.setText("");
+        mBuyingPrice.setText("");
+        mSupplierContact.setText("");
+        mSupplierName.setText("");
+        mStatusSpinner.setSelection(0);
+        mCategorySpinner.setSelection(3);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_editor.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new pet, hide the "Delete" menu item.
+        if (mCurrentBookUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Save" menu option
+            case R.id.action_save:
+                saveBook();
+                //Goes back to CatalogActivity
+                finish();
+                return true;
+            // Respond to a click on the "Delete" menu option
+            case R.id.action_delete:
+                // Do nothing for now
+                showDeleteConfirmationDialog();
+                return true;
+            // Respond to a click on the "Up" arrow button in the app bar
+            case android.R.id.home:
+                // Navigate back to parent activity (CatalogActivity)
+                if (!mBookHasChanged) {
+                    NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                    return true;
+                }
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                            }
+                        };
+                showUnsavedChangesDialog(discardButtonClickListener);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!mBookHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                };
+        showUnsavedChangesDialog(discardButtonClickListener);
+    }
+
+
+
+        private void showUnsavedChangesDialog (
+                DialogInterface.OnClickListener discardButtonClickListener){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.unsaved_changes_dialog_msg);
+            builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+            builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+        }
+
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the pet.
+                deleteBook();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteBook() {
+        // TODO: Implement this method
+        if (mCurrentBookUri != null) {
+            int rowsDeleted = getContentResolver().delete(mCurrentBookUri, null, null);
+
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, getString(R.string.editor_delete_book_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_delete_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            finish();
+        }
+    }
+
 }

@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".EditorActivity"
             android:parentActivityName=".CatalogActivity"/>
+        <activity android:name=".DetailsActivity"
+            android:parentActivityName=".CatalogActivity"/>
     <provider
         android:name=".data.BookProvider"
         android:authorities="rocks.lechick.android.bookinvent"

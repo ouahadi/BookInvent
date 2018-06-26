@@ -24,6 +24,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 
+import rocks.lechick.android.bookinvent.DetailsActivity;
 import rocks.lechick.android.bookinvent.EditorActivity;
 import rocks.lechick.android.bookinvent.R;
 import rocks.lechick.android.bookinvent.adapters.BookCursorAdapter;
@@ -51,9 +52,10 @@ public class BusinessFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), EditorActivity.class);
+                Intent i = new Intent(getActivity(), DetailsActivity.class);
                 Uri currentBookUri =  ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
                 i.setData(currentBookUri);
+                Log.v("Biz Frag", "This is the passed on URI" + currentBookUri);
                 startActivity(i);
             }
         });

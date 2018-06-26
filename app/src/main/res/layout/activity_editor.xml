@@ -118,7 +118,7 @@
         android:id="@+id/supplier_contact_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter phone number"/>
+        android:hint="Email or phone number"/>
 
     <LinearLayout
         android:id="@+id/container_delivery_status"

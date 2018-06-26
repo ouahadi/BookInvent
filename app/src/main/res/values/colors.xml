@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#6b0848</color>
     <color name="colorAccent">#ffc300</color>
     <color name="colorBackground">#ffe8d5</color>
+    <color name="colorHighlight">#33a40a3c</color>
     <color name="colorTurquoise">#1abc9c</color>
     <color name="colorTurquoiseDark">#16a085</color>
     <color name="colorGrayLessLight">#bdc3c7</color>
