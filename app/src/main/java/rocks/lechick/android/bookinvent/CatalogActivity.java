@@ -59,20 +59,20 @@ public class CatalogActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-
     }
-
 
     public void editQuantity(Context context, ContentValues values, Cursor cursor, long id, int position) {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
         cursor.moveToPosition(position);
         int quantityInt = cursor.getInt(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_QUANTITY));
-        quantityInt = quantityInt - 1;
-        values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
+        if (quantityInt > 1) {
+            quantityInt = quantityInt - 1;
+            values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
 
-        context.getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+            context.getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+        }
+
     }
-
 }
 
 

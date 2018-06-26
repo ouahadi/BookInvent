@@ -209,10 +209,12 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     public void editQuantityMinus(ContentValues values, Cursor cursor, long id) {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
         cursor.moveToFirst();
-        quantityInt = quantityInt - 1;
-        values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
-        mQuantity.setText(Integer.toString(quantityInt));
-        getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+        if (quantityInt > 1) {
+            quantityInt = quantityInt - 1;
+            values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
+            mQuantity.setText(Integer.toString(quantityInt));
+            getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+        }
     }
 
 
