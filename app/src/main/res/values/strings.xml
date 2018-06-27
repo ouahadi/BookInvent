@@ -34,5 +34,9 @@
         latest batch. PLEASE DESCRIBE THE ISSUE
         \nWe would really appreciate if you could replace the whole batch,
         because the defect makes it impossible to sell. \nThree million thanks! \nXXX</string>
+    <string name="cant_sell_zero">Selling out of stock products is not allowed</string>
+    <string name="enter_valid_price">Please enter a valid price</string>
+    <string name="invalid_price">Invalid price entered</string>
+    <string name="enter_valid_quantity">Please enter the quantity in stock</string>
 
 </resources>

@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import rocks.lechick.android.bookinvent.adapters.SimpleFragmentPagerAdapter;
 import rocks.lechick.android.bookinvent.data.BookContract;
@@ -43,11 +44,9 @@ public class CatalogActivity extends AppCompatActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        // Create an adapter that knows which fragment should be shown on each page
         SimpleFragmentPagerAdapter adapter;
         adapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
 
-        // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -65,11 +64,14 @@ public class CatalogActivity extends AppCompatActivity {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
         cursor.moveToPosition(position);
         int quantityInt = cursor.getInt(cursor.getColumnIndexOrThrow(BookContract.BookEntry.COLUMN_NAME_QUANTITY));
-        if (quantityInt > 1) {
+        if (quantityInt > 0) {
             quantityInt = quantityInt - 1;
             values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
 
             context.getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+        }
+        if (0 >= quantityInt) {
+            Toast.makeText(this, R.string.cant_sell_zero, Toast.LENGTH_LONG);
         }
 
     }

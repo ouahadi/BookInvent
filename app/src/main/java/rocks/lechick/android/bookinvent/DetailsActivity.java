@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.URLEncoder;
 
@@ -30,19 +31,15 @@ import rocks.lechick.android.bookinvent.data.BookDbHelper;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private long id;
     private Cursor mCursor;
     private TextView mAuthor;
     private TextView mTitle;
     private TextView mBuyingPrice;
     private TextView mSellingPrice;
     private TextView mQuantity;
-    private String mSupplierName;
     private TextView mCategoryView;
-    private int mCategoryInt;
     private int quantityInt;
     private Uri mCurrentBookUri;
-    private BookDbHelper mDbHelper;
     private String supplierContact;
     private static final int EXISTING_BOOK_LOADER = 0;
     private String titleString;
@@ -77,8 +74,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mBuyingPrice = (TextView) findViewById(R.id.details_buying_price);
         mSellingPrice = (TextView) findViewById(R.id.details_selling_price);
         mQuantity = (TextView) findViewById(R.id.details_stock_count);
-        //mSupplierName = (EditText) findViewById(R.id.supplier_name_text_view);
-        //mSupplierContact = (EditText) findViewById(R.id.supplier_contact_text_view);
         mCategoryView = (TextView) findViewById(R.id.details_category_text_view);
 
         Button mPlusStock = (Button) findViewById(R.id.details_plus_stock);
@@ -209,11 +204,14 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     public void editQuantityMinus(ContentValues values, Cursor cursor, long id) {
         String whereThing = BookContract.BookEntry._ID + " = " + id;
         cursor.moveToFirst();
-        if (quantityInt > 1) {
+        if (quantityInt > 0) {
             quantityInt = quantityInt - 1;
             values.put(BookContract.BookEntry.COLUMN_NAME_QUANTITY, quantityInt);
             mQuantity.setText(Integer.toString(quantityInt));
             getContentResolver().update(BookContract.BookEntry.CONTENT_URI, values, whereThing, null);
+        }
+        if (quantityInt <= 0) {
+            Toast.makeText(this, R.string.cant_sell_zero, Toast.LENGTH_LONG);
         }
     }
 
@@ -244,11 +242,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             Log.d("Database", "Data empty");
         }
         else {
-            //Move cursor to first record
             cursor.moveToFirst();
 
-            // Find the columns of pet attributes that we're interested in
-            int idColumnIndex = cursor.getColumnIndex(BookContract.BookEntry._ID);
             int titleColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_TITLE);
             int authorColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_AUTHOR);
             int quantityColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
@@ -266,8 +261,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             double sprice = cursor.getDouble(spriceColumnIndex);
             double bprice = cursor.getDouble(bpriceColumnIndex);
             String mSupplierContact = cursor.getString(supplierConColumnIndex);
-            String supplierName = cursor.getString(supplierNameColumnIndex);
-            int shipmentStatus = cursor.getInt(shipmentStatusColumnIndex);
             int category = cursor.getInt(categoryColumnIndex);
 
             // Update the views on the screen with the values from the database

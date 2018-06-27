@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import rocks.lechick.android.bookinvent.DetailsActivity;
 import rocks.lechick.android.bookinvent.R;
@@ -28,11 +29,12 @@ import rocks.lechick.android.bookinvent.data.BookDbHelper;
 
 public class PopScienceFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int BOOK_LOADER = 0;
+    private int BOOK_LOADER = 0;
     BookCursorAdapter mCursorAdapter;
     BookDbHelper mDbHelper;
     private String sortOrder = null;
     private String selection;
+    private int mTotal;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,10 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
 
         mDbHelper = new BookDbHelper(getActivity());
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
+
+        Log.v("total count in pop sci", "The count result for mTotal is " + mTotal);
+        TextView totalCount = (TextView) view.findViewById(R.id.items_number_view);
+        totalCount.setText(Integer.toString(mTotal));
 
         return view;
     }
@@ -89,6 +95,7 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mTotal = cursor.getCount();
         mCursorAdapter.swapCursor(cursor);
     }
 

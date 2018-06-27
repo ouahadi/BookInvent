@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import rocks.lechick.android.bookinvent.DetailsActivity;
 import rocks.lechick.android.bookinvent.R;
@@ -28,11 +29,12 @@ import rocks.lechick.android.bookinvent.data.BookDbHelper;
 
 public class FictionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int BOOK_LOADER = 0;
+    private int BOOK_LOADER = 0;
     BookCursorAdapter mCursorAdapter;
     BookDbHelper mDbHelper;
     private String sortOrder = null;
     private String selection;
+    private int mTotal;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,9 @@ public class FictionFragment extends Fragment implements LoaderManager.LoaderCal
 
         mDbHelper = new BookDbHelper(getActivity());
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
+
+        TextView totalCount = (TextView) view.findViewById(R.id.items_number_view);
+        totalCount.setText(Integer.toString(mTotal));
 
         return view;
     }
@@ -89,6 +94,7 @@ public class FictionFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mTotal = cursor.getCount();
         mCursorAdapter.swapCursor(cursor);
     }
 

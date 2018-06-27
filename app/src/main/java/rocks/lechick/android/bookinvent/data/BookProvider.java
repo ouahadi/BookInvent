@@ -99,11 +99,11 @@ public class BookProvider extends ContentProvider{
                 throw new IllegalArgumentException("Please add an author");
             }
             String buyingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_BPRICE);
-            if (buyingPrice == null) {
+            if (buyingPrice == null && buyingPrice.length() == 0) {
                 throw new IllegalArgumentException("Book requires a price");
             }
             String sellingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SPRICE);
-            if (sellingPrice == null) {
+            if (sellingPrice == null && sellingPrice.length() == 0) {
                 throw new IllegalArgumentException("Please add selling price");
             }
             String supplierName = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME);
