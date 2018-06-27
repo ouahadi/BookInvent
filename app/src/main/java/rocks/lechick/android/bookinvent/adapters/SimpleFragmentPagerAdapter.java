@@ -17,12 +17,10 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[];
 
 
-
-
     public SimpleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.mContext = context;
-        tabTitles = new String[] {
+        tabTitles = new String[]{
                 mContext.getResources().getString(R.string.fiction),
                 mContext.getResources().getString(R.string.business),
                 mContext.getResources().getString(R.string.pop_sci),

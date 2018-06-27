@@ -38,5 +38,16 @@
     <string name="enter_valid_price">Please enter a valid price</string>
     <string name="invalid_price">Invalid price entered</string>
     <string name="enter_valid_quantity">Please enter the quantity in stock</string>
+    <string name="book_requires_name">Book requires a name</string>
+    <string name="book_requires_author">Book requires an author</string>
+    <string name="book_requires_selling_price">Please add a selling price</string>
+    <string name="book_requires_buying_price">Please add a bying price</string>
+    <string name="book_requires_quantity">Please add quantity</string>
+    <string name="book_requires_supplier_data">Please enter supplier details</string>
+    <string name="book_requires_supplier_contact">Please add a valid number or email address</string>
+    <string name="book_requires_category">Please select category</string>
+    <string name="need_email_app">Please install an email app and try again</string>
+
+
 
 </resources>

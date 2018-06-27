@@ -103,8 +103,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View v) {
                 if (mCurrentBookUri == null) {
                     insertBook();
-                }
-                else {
+                } else {
                     saveBook();
                 }
 
@@ -189,14 +188,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String title = mTitle.getText().toString().trim();
 
         String buyPriceString = mBuyingPrice.getText().toString().trim();
-        if (buyPriceString != null && buyPriceString.length() > 0){
+        if (buyPriceString != null && buyPriceString.length() > 0) {
             buyPrice = Double.parseDouble(mBuyingPrice.getText().toString().trim());
         } else {
             Toast.makeText(this, R.string.enter_valid_price, Toast.LENGTH_LONG);
         }
 
         String sellPriceString = mSellingPrice.getText().toString().trim();
-        if (!sellPriceString.isEmpty() && sellPriceString.length() > 0){
+        if (!sellPriceString.isEmpty() && sellPriceString.length() > 0) {
             sellPrice = Double.parseDouble(mSellingPrice.getText().toString().trim());
         } else {
             Toast.makeText(this, R.string.enter_valid_price, Toast.LENGTH_LONG);
@@ -214,10 +213,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int deliveryStatus = mDeliveryStatus;
         int category = mCategory;
 
-        if (mCurrentBookUri == null && TextUtils.isEmpty(author) &&
-                TextUtils.isEmpty(title) && TextUtils.isEmpty(buyPriceString) &&
-                TextUtils.isEmpty(sellPriceString) && TextUtils.isEmpty(quantityString) &&
-                TextUtils.isEmpty(supplierName) && TextUtils.isEmpty(supplierContact)) {
+        if (TextUtils.isEmpty(author) ||
+                TextUtils.isEmpty(title) || TextUtils.isEmpty(buyPriceString) ||
+                TextUtils.isEmpty(sellPriceString) || TextUtils.isEmpty(quantityString) ||
+                TextUtils.isEmpty(supplierName) || TextUtils.isEmpty(supplierContact)) {
             return;
         }
 
@@ -253,12 +252,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int category = mCategory;
 
 
-        if (mCurrentBookUri == null &&
-                TextUtils.isEmpty(author) && TextUtils.isEmpty(title) &&
-                TextUtils.isEmpty(buyPrice) && TextUtils.isEmpty(sellPrice) &&
-                TextUtils.isEmpty(quantity) && TextUtils.isEmpty(supplierName) &&
-                TextUtils.isEmpty(supplierContact) && deliveryStatus == BookContract.BookEntry.DELIVERY_STATUS_IN_STOCK &&
-                category == BookContract.BookEntry.CATEGORY_OTHER) {
+        if (TextUtils.isEmpty(author) || TextUtils.isEmpty(title) ||
+                TextUtils.isEmpty(buyPrice) || TextUtils.isEmpty(sellPrice) ||
+                TextUtils.isEmpty(quantity) || TextUtils.isEmpty(supplierName) ||
+                TextUtils.isEmpty(supplierContact)) {
 
             return;
         }
@@ -403,7 +400,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveBook();
+                if (mCurrentBookUri == null) {
+                    insertBook();
+                } else {
+                    saveBook();
+                }
                 finish();
                 return true;
             case R.id.action_delete:
@@ -446,23 +447,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
 
-
-        private void showUnsavedChangesDialog (
-                DialogInterface.OnClickListener discardButtonClickListener){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.unsaved_changes_dialog_msg);
-            builder.setPositiveButton(R.string.discard, discardButtonClickListener);
-            builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    if (dialog != null) {
-                        dialog.dismiss();
-                    }
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
                 }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
-        }
+    }
 
 
     private void showDeleteConfirmationDialog() {

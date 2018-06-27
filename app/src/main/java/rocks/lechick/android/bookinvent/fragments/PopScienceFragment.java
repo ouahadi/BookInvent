@@ -39,7 +39,7 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.listview_fragment,container,false);
+        View view = inflater.inflate(R.layout.listview_fragment, container, false);
         ListView listView = view.findViewById(R.id.listView);
         View emptyView = view.findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
@@ -50,7 +50,7 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent i = new Intent(getActivity(), DetailsActivity.class);
-                Uri currentBookUri =  ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
+                Uri currentBookUri = ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, id);
                 i.setData(currentBookUri);
                 Log.v("Biz Frag", "This is the passed on URI" + currentBookUri);
                 startActivity(i);
@@ -68,7 +68,7 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
@@ -107,9 +107,8 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_category, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
-
 
 
     @Override
@@ -119,17 +118,17 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
             case R.id.by_stock:
                 sortOrder = BookContract.BookEntry.COLUMN_NAME_QUANTITY + " DESC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER, null, this);
                 return true;
             case R.id.by_author:
                 sortOrder = BookContract.BookEntry.COLUMN_NAME_AUTHOR + " ASC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER, null, this);
                 return true;
             case R.id.by_title:
                 sortOrder = BookContract.BookEntry.COLUMN_NAME_TITLE + " ASC";
                 mCursorAdapter.notifyDataSetChanged();
-                getLoaderManager().restartLoader(BOOK_LOADER,null, this);
+                getLoaderManager().restartLoader(BOOK_LOADER, null, this);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -142,7 +141,7 @@ public class PopScienceFragment extends Fragment implements LoaderManager.Loader
     private void deleteAllBooks() {
         int rowsDeleted = getActivity().getContentResolver().delete(BookContract.BookEntry.CONTENT_URI, selection, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
-        getLoaderManager().restartLoader(BOOK_LOADER,null, this);
+        getLoaderManager().restartLoader(BOOK_LOADER, null, this);
     }
 
 }

@@ -56,7 +56,7 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
     }
 

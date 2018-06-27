@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 
 public final class BookContract {
 
-    private BookContract() {}
+    private BookContract() {
+    }
 
     public static final String CONTENT_AUTHORITY = "rocks.lechick.android.bookinvent";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -42,7 +43,7 @@ public final class BookContract {
         public static final int CATEGORY_POP_SCIENCE = 2;
         public static final int CATEGORY_OTHER = 3;
 
-        public static boolean isValidCategory(int category){
+        public static boolean isValidCategory(int category) {
             if (category == CATEGORY_FICTION || category == CATEGORY_BUSINESS ||
                     category == CATEGORY_POP_SCIENCE || category == CATEGORY_OTHER) {
                 return true;
@@ -68,16 +69,16 @@ public final class BookContract {
         }
 
         public static boolean isValidMobile(String phone) {
-            boolean check=false;
-            if(!Pattern.matches("[a-zA-Z]+", phone)) {
-                if(phone.length() < 6 || phone.length() > 13) {
+            boolean check = false;
+            if (!Pattern.matches("[a-zA-Z]+", phone)) {
+                if (phone.length() < 6 || phone.length() > 13) {
                     // if(phone.length() != 10) {
                     check = false;
                 } else {
                     check = true;
                 }
             } else {
-                check=false;
+                check = false;
             }
             return check;
         }

@@ -96,12 +96,17 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View view) {
                 if (BookContract.BookEntry.isValidMail(supplierContact) == true) {
-                    Intent i =  new Intent(Intent.ACTION_SENDTO);
+                    Intent i = new Intent(Intent.ACTION_SENDTO);
                     i.setData(Uri.parse("mailto:"));
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[] {supplierContact});
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{supplierContact});
                     i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_order_subj) + " " + titleString);
                     i.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_order_text));
-                    startActivity(i);
+                    if (i.resolveActivity(getPackageManager()) != null) {
+                        startActivity(i);
+                    }
+                    else {
+                        Toast.makeText(DetailsActivity.this, R.string.need_email_app, Toast.LENGTH_LONG);
+                    }
                 }
                 if (BookContract.BookEntry.isValidMobile(supplierContact) == true) {
                     Intent ii = new Intent(Intent.ACTION_DIAL);
@@ -115,9 +120,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View view) {
                 if (BookContract.BookEntry.isValidMail(supplierContact) == true) {
-                    Intent i =  new Intent(Intent.ACTION_SENDTO);
+                    Intent i = new Intent(Intent.ACTION_SENDTO);
                     i.setData(Uri.parse("mailto:"));
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[] {supplierContact});
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{supplierContact});
                     i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_defect_subj) + " " + titleString);
                     i.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_defect_text));
                     startActivity(i);
@@ -240,8 +245,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         if (cursor == null) {
             Log.d("Database", "Data empty");
-        }
-        else {
+        } else {
             cursor.moveToFirst();
 
             int titleColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_NAME_TITLE);
@@ -304,15 +308,16 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         }
     }
-        @Override
-        public void onLoaderReset (Loader < Cursor > loader) {
-            mTitle.setText("");
-            mAuthor.setText("");
-            mQuantity.setText("");
-            mSellingPrice.setText("");
-            mBuyingPrice.setText("");
-            mCategoryView.setText(R.string.other);
-        }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mTitle.setText("");
+        mAuthor.setText("");
+        mQuantity.setText("");
+        mSellingPrice.setText("");
+        mBuyingPrice.setText("");
+        mCategoryView.setText(R.string.other);
     }
+
+}
 

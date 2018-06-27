@@ -11,8 +11,11 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
-public class BookProvider extends ContentProvider{
+import rocks.lechick.android.bookinvent.R;
+
+public class BookProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int BOOKS = 100;
@@ -62,7 +65,7 @@ public class BookProvider extends ContentProvider{
         }
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
-        }
+    }
 
     @Override
     public String getType(Uri uri) {
@@ -89,57 +92,54 @@ public class BookProvider extends ContentProvider{
         }
     }
 
-        private Uri insertBook(Uri uri, ContentValues contentValues){
-            String title = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_TITLE);
-            if (title == null) {
-                throw new IllegalArgumentException("Book requires a name");
-            }
-            String author = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_AUTHOR);
-            if (author == null) {
-                throw new IllegalArgumentException("Please add an author");
-            }
-            String buyingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_BPRICE);
-            if (buyingPrice == null && buyingPrice.length() == 0) {
-                throw new IllegalArgumentException("Book requires a price");
-            }
-            String sellingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SPRICE);
-            if (sellingPrice == null && sellingPrice.length() == 0) {
-                throw new IllegalArgumentException("Please add selling price");
-            }
-            String supplierName = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME);
-            if (supplierName == null) {
-                throw new IllegalArgumentException("Book requires a price");
-            }
-            String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT);
-            if (!BookContract.BookEntry.isValidMail(supplierContact) && !BookContract.BookEntry.isValidMobile(supplierContact)) {
-                throw new IllegalArgumentException("Please add a valid number or email address");
-            }
-            Integer quantity = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
-            if (quantity == null) {
-                throw new IllegalArgumentException("Please add quantity");
-            }
-            Integer category = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_CATEGORY);
-            if (category == null && !BookContract.BookEntry.isValidCategory(category)){
-                throw new IllegalArgumentException("Please select category");
-            }
-            Integer shipment = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
+    private Uri insertBook(Uri uri, ContentValues contentValues) {
+        String title = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_TITLE);
+        if (title == null) {
+            Toast.makeText(getContext(), R.string.book_requires_name, Toast.LENGTH_LONG);
+        }
+        String author = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_AUTHOR);
+        if (author == null) {
+            Toast.makeText(getContext(), R.string.book_requires_author, Toast.LENGTH_LONG);
+        }
+        String buyingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_BPRICE);
+        if (buyingPrice == null && buyingPrice.length() == 0) {
+            Toast.makeText(getContext(), R.string.book_requires_buying_price, Toast.LENGTH_LONG);
+        }
+        String sellingPrice = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SPRICE);
+        if (sellingPrice == null && sellingPrice.length() == 0) {
+            Toast.makeText(getContext(), R.string.book_requires_selling_price, Toast.LENGTH_LONG);
+        }
+        String supplierName = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_NAME);
+        if (supplierName == null) {
+            Toast.makeText(getContext(), R.string.book_requires_supplier_data, Toast.LENGTH_LONG);        }
+        String supplierContact = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_SUPPLIER_CONTACT);
+        if (!BookContract.BookEntry.isValidMail(supplierContact) && !BookContract.BookEntry.isValidMobile(supplierContact)) {
+            Toast.makeText(getContext(), R.string.book_requires_supplier_contact, Toast.LENGTH_LONG);
+        }
+        Integer quantity = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_QUANTITY);
+        if (quantity == null) {
+            Toast.makeText(getContext(), R.string.book_requires_quantity, Toast.LENGTH_LONG);
+        }
+        Integer category = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_CATEGORY);
+        if (category == null && !BookContract.BookEntry.isValidCategory(category)) {
+            Toast.makeText(getContext(), R.string.book_requires_category, Toast.LENGTH_LONG);
+        }
+        Integer shipment = contentValues.getAsInteger(BookContract.BookEntry.COLUMN_NAME_SHIPMENT_STATUS);
 
 
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-            long id = db.insert(BookContract.BookEntry.TABLE_NAME, null, contentValues);
-            // Once we know the ID of the new row in the table,
-            // return the new URI with the ID appended to the end of it
+        long id = db.insert(BookContract.BookEntry.TABLE_NAME, null, contentValues);
 
-            if (id == -1) {
-                Log.e(LOG_TAG, "Failed to insert row for " + uri);
-                return null;
-
-            }
-            getContext().getContentResolver().notifyChange(uri, null);
-            return ContentUris.withAppendedId(uri, id);
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
 
         }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return ContentUris.withAppendedId(uri, id);
+
+    }
 
 
     @Override
@@ -156,7 +156,7 @@ public class BookProvider extends ContentProvider{
             case BOOK_ID:
                 // Delete a single row given by the ID in the URI
                 selection = BookContract.BookEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(BookContract.BookEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
@@ -185,7 +185,8 @@ public class BookProvider extends ContentProvider{
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
     }
-    private int updateBook(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs){
+
+    private int updateBook(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         String title = contentValues.getAsString(BookContract.BookEntry.COLUMN_NAME_TITLE);
         if (title == null) {
             throw new IllegalArgumentException("Book requires a name");

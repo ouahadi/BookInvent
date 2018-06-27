@@ -71,7 +71,7 @@ public class BookCursorAdapter extends CursorAdapter {
             bookImage.setImageResource(R.drawable.turquoise_book);
         }
 
-        sellButton.setOnClickListener(new View.OnClickListener(){
+        sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
